@@ -12,16 +12,18 @@ app.config.update(dict(
     WTF_CSRF_SECRET_KEY="a csrf secret key"
 ))
 
+#Create and instance
 bcrypt = Bcrypt(app)
 
-# Config MySQL
+# Configure MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_DB'] = 'flaskdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-# init MYSQL
+
+# initialize MYSQL
 mysqldb = MySQL(app)
 
 #Articles = Articles()
@@ -90,7 +92,7 @@ def register():
         # Close connection
         cur.close()
 
-        flash('You are now registered and can log in', 'success')
+        flash('You are registered. Please log in', 'success')
 
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
@@ -121,7 +123,7 @@ def login():
                 session['logged_in'] = True
                 session['username'] = username
 
-                flash('You are now logged in', 'success')
+                #flash('You are now logged in', 'success')
                 return redirect(url_for('dashboard'))
             else:
                 error = 'Invalid login'
@@ -143,7 +145,7 @@ def is_logged_in(f):
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
-            flash('Unauthorized, Please login', 'danger')
+            flash('Unauthorized user, Please login', 'danger')
             return redirect(url_for('login'))
     return wrap
 
@@ -154,7 +156,7 @@ def is_logged_in(f):
 @is_logged_in
 def logout():
     session.clear()
-    flash('You are now logged out', 'success')
+    flash('You are logged out', 'success')
     return redirect(url_for('login'))
 
 # Dashboard
@@ -213,7 +215,7 @@ def add_article():
         # Close connection
         cur.close()
 
-        flash('Article Created', 'success')
+        flash('Task Created', 'success')
 
         return redirect(url_for('dashboard'))
 
@@ -255,7 +257,7 @@ def edit_article(id):
         # Close connection
         cur.close()
 
-        flash('Article Updated', 'success')
+        flash('Task was successfully updated', 'success')
 
         return redirect(url_for('dashboard'))
 
@@ -279,7 +281,7 @@ def delete_article(id):
     # Close connection
     cur.close()
 
-    flash('Article Deleted', 'success')
+    flash('Task was successfully deleted', 'success')
 
     return redirect(url_for('dashboard'))
 

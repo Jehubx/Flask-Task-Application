@@ -3,7 +3,12 @@
 {% block body %}
 <div class="container-sm mt-5">
     <h1>Login</h1>
-    {% from "includes/formhelper.html" import render_field %}
+    {% from "includes/_formhelper.html" import render_field %}
+
+    {% for message in get_flashed_messages() %}
+    <h5>{{ message }}</h5>
+    {% endfor %}
+    
     <form action="" method="POST">
         <div class="form-group">
             <label class="mb-1">Username</label>
